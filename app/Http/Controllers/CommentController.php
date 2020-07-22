@@ -25,7 +25,7 @@ class CommentController extends Controller
         // validate data receive
         $request->validate([
             'name'=>'required',
-            'parent_id'=>'required|integer',
+            'parent_id'=>'numeric',
             'body'=>'required'
         ]);
 
@@ -48,7 +48,7 @@ class CommentController extends Controller
     public function findByParentId(Request $request) {
         // validate data
         $request->validate([
-            'id'=>'required'
+            'id'=>'numeric'
         ]);
 
         $parent_id = $request->id;

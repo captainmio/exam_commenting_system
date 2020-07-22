@@ -1991,20 +1991,22 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       // create a comment to this post
-      this.$store.dispatch('comment/addComment', {
-        parent_id: this.parent.id,
-        body: this.body,
-        name: this.name
-      }).then(function (response) {
-        // null the body and name fields
-        _this.body = null;
-        _this.name = null;
+      if (this.body && this.name) {
+        this.$store.dispatch('comment/addComment', {
+          parent_id: this.parent.id,
+          body: this.body,
+          name: this.name
+        }).then(function (response) {
+          // null the body and name fields
+          _this.body = null;
+          _this.name = null;
 
-        _this.$emit('pull-comments', true);
+          _this.$emit('pull-comments', true);
 
-        _this.callComments(); // call again all the comments with its proper base layer
+          _this.callComments(); // call again all the comments with its proper base layer
 
-      });
+        });
+      }
     },
     showComment: function showComment(post_id) {
       this.primary_comment = post_id;

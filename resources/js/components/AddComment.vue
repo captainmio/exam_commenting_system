@@ -53,20 +53,21 @@ export default {
     methods: {
         addComment() {
             // create a comment to this post
-            this.$store.dispatch('comment/addComment', {
-                parent_id: this.parent.id,
-                body: this.body,
-                name: this.name
-            }).then(response => {
-                // null the body and name fields
-                this.body = null;
-                this.name = null;
-                
+            if(this.body && this.name) {
+                this.$store.dispatch('comment/addComment', {
+                    parent_id: this.parent.id,
+                    body: this.body,
+                    name: this.name
+                }).then(response => {
+                    // null the body and name fields
+                    this.body = null;
+                    this.name = null;
+                    
 
-                this.$emit('pull-comments', true);
-                this.callComments(); // call again all the comments with its proper base layer
-            });
-            
+                    this.$emit('pull-comments', true);
+                    this.callComments(); // call again all the comments with its proper base layer
+                });
+            }    
         },
         showComment(post_id) {
             this.primary_comment = post_id;
