@@ -6,3 +6,25 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+
+p {
+    font-size: 16px;
+}
+
+i {
+    display: block;
+    font-size: 12px;
+}
+
+strong{
+    font-weight: bold;
+    color: #3490dc;
+    font-size: 18px;
+}
+
+.content_content {
+    background: #F2F3F5;
+    padding: 20px;
+    border-radius: 10px;
+}
