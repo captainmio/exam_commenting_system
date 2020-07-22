@@ -39,3 +39,9 @@ php artisan serve
 # for vuejs
 npm run watch-poll
 ```
+
+**Step 6**: To Test PHPunit, just run the following command in another terminal
+
+```
+vendor/bin/phpunit
+```
