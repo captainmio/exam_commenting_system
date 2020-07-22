@@ -17,9 +17,9 @@
 
                             <h3>Comments</h3>
                             <div v-for="comment in comments" :key="comment.id">
-                                <strong>{{ comment.name }}</strong>
-                                <i>{{ comment.created_at | moment("dddd, MMMM Do YYYY") }}</i>
-                                <p class="content_content">{{ comment.body }}</p>
+                                <strong v-html="comment.name"></strong>
+                                <i>{{ comment.created_at | moment("MMMM Do YYYY h:mm:ss a") }}</i>
+                                <p class="content_content" v-html="comment.body"></p>
                                 <AddComment :parent="{id: comment.id, btntxt: 'Reply', depth: 0}"></AddComment>
                             </div>  
                         </div>
@@ -51,17 +51,18 @@ export default {
         AddComment
     },
     methods: {
+        // pull all base comments(base layer)
         callComments() {
             this.$store.dispatch('comment/pullComments', {parent_id: 0}).then(data => {
                 this.comments = data.data;
             });
         },
+        // this is to toggle reply/add comment button to hide/show the comment box
         showComment(post_id) {
             this.primary_comment = post_id;
         }
     },
     mounted: function() {
-        // var test = this.$store.dispatch('comment/pullComments', {parent_id: this.parent_id});
         this.callComments();
     }
 }

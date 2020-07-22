@@ -11,7 +11,7 @@ class CommentController extends Controller
 {
     protected $commentRepository;
     /**
-     * UserController constructor.
+     * commentController constructor. Implemented Repository design pattern
      *
      * @param commentRepositoryInterface $commentRepository
      */
@@ -46,6 +46,11 @@ class CommentController extends Controller
 
     // Pull
     public function findByParentId(Request $request) {
+        // validate data
+        $request->validate([
+            'id'=>'required'
+        ]);
+
         $parent_id = $request->id;
 
         $comment_result = $this->commentRepository->findByParentId($parent_id);

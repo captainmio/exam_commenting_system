@@ -1958,14 +1958,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'AddComment',
@@ -2004,13 +1996,14 @@ __webpack_require__.r(__webpack_exports__);
         body: this.body,
         name: this.name
       }).then(function (response) {
+        // null the body and name fields
         _this.body = null;
-        _this.name = null; // this.$store.dispatch('post/pullAllPosts', {id: 0});
-        // this.$emit('update-replies', true);
+        _this.name = null;
 
         _this.$emit('pull-comments', true);
 
-        _this.callComments();
+        _this.callComments(); // call again all the comments with its proper base layer
+
       });
     },
     showComment: function showComment(post_id) {
@@ -2027,6 +2020,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    // added timeout so it wont cause too much request to the server side
     var self = this;
     setTimeout(function () {
       self.callComments();
@@ -2096,6 +2090,7 @@ __webpack_require__.r(__webpack_exports__);
     AddComment: _AddComment__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   methods: {
+    // pull all base comments(base layer)
     callComments: function callComments() {
       var _this = this;
 
@@ -2105,12 +2100,12 @@ __webpack_require__.r(__webpack_exports__);
         _this.comments = data.data;
       });
     },
+    // this is to toggle reply/add comment button to hide/show the comment box
     showComment: function showComment(post_id) {
       this.primary_comment = post_id;
     }
   },
   mounted: function mounted() {
-    // var test = this.$store.dispatch('comment/pullComments', {parent_id: this.parent_id});
     this.callComments();
   }
 });
@@ -38528,19 +38523,23 @@ var render = function() {
               "div",
               { key: reply.id },
               [
-                _c("strong", [_vm._v(_vm._s(reply.name))]),
+                _c("strong", { domProps: { innerHTML: _vm._s(reply.name) } }),
                 _vm._v(" "),
                 _c("i", [
                   _vm._v(
                     _vm._s(
-                      _vm._f("moment")(reply.created_at, "dddd, MMMM Do YYYY")
+                      _vm._f("moment")(
+                        reply.created_at,
+                        "MMMM Do YYYY h:mm:ss a"
+                      )
                     )
                   )
                 ]),
                 _vm._v(" "),
-                _c("p", { staticClass: "content_content" }, [
-                  _vm._v(_vm._s(reply.body))
-                ]),
+                _c("p", {
+                  staticClass: "content_content",
+                  domProps: { innerHTML: _vm._s(reply.body) }
+                }),
                 _vm._v(" "),
                 _c("AddComment", {
                   attrs: {
@@ -38631,22 +38630,25 @@ var render = function() {
                         "div",
                         { key: comment.id },
                         [
-                          _c("strong", [_vm._v(_vm._s(comment.name))]),
+                          _c("strong", {
+                            domProps: { innerHTML: _vm._s(comment.name) }
+                          }),
                           _vm._v(" "),
                           _c("i", [
                             _vm._v(
                               _vm._s(
                                 _vm._f("moment")(
                                   comment.created_at,
-                                  "dddd, MMMM Do YYYY"
+                                  "MMMM Do YYYY h:mm:ss a"
                                 )
                               )
                             )
                           ]),
                           _vm._v(" "),
-                          _c("p", { staticClass: "content_content" }, [
-                            _vm._v(_vm._s(comment.body))
-                          ]),
+                          _c("p", {
+                            staticClass: "content_content",
+                            domProps: { innerHTML: _vm._s(comment.body) }
+                          }),
                           _vm._v(" "),
                           _c("AddComment", {
                             attrs: {
@@ -57378,7 +57380,6 @@ var actions = {
     });
   },
   pullComments: function pullComments(context, payload) {
-    // console.log(payload);
     return new Promise(function (resolve, reject) {
       var baseUrl = _common_api_service__WEBPACK_IMPORTED_MODULE_0__["default"].getBaseUrl();
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(baseUrl + '/comment/pullComments/' + payload.parent_id).then(function (response) {

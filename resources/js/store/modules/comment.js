@@ -36,7 +36,6 @@ export const actions = {
         });    
     },
     pullComments(context, payload) {
-        // console.log(payload);
         return new Promise((resolve, reject) => {
             let baseUrl = ApiService.getBaseUrl();
             axios

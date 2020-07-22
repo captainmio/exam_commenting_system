@@ -9,20 +9,12 @@
 
         <div v-if="parent.id !== 0" style="width: 95%; margin-left: auto; display: block">
             <div v-for="reply in replies" :key="reply.id">
-                <strong>{{ reply.name }}</strong>
-                <i>{{ reply.created_at | moment("dddd, MMMM Do YYYY") }}</i>
-                <p class="content_content">{{ reply.body }}</p>
+                <strong v-html="reply.name"></strong>
+                <i>{{ reply.created_at | moment("MMMM Do YYYY h:mm:ss a") }}</i>
+                <p class="content_content" v-html="reply.body"></p>
                 <AddComment :parent="{id: reply.id, btntxt: 'Reply', depth: parent.depth+1}"></AddComment>
             </div>
-        </div>
-        
-        <!-- forloop all content and increase to 1(which will serve to what parent_id it will belong) and increate AddComment Component -->
-        <!-- <div v-if="primary_comment == 1">
-            <input type="text" v-model="name" placeholder="Name" class="form-control">
-            <textarea v-model="body" class="d-inline-block form-control" placeholder="Add comment  . . ."></textarea>
-            <button class="ml-auto d-block btn btn-primary btn-large" @click="addComment()">Comment</button>
-        </div> -->
-            
+        </div>   
     </div>
 </template>
 
@@ -66,13 +58,13 @@ export default {
                 body: this.body,
                 name: this.name
             }).then(response => {
+                // null the body and name fields
                 this.body = null;
                 this.name = null;
-                // this.$store.dispatch('post/pullAllPosts', {id: 0});
-                // this.$emit('update-replies', true);
+                
 
                 this.$emit('pull-comments', true);
-                this.callComments();
+                this.callComments(); // call again all the comments with its proper base layer
             });
             
         },
@@ -87,6 +79,7 @@ export default {
     },
     mounted: function() {
 
+        // added timeout so it wont cause too much request to the server side
         let self = this;
         setTimeout(function(){ 
             self.callComments(); 

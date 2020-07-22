@@ -13,6 +13,8 @@ class CommentRepository implements CommentRepositoryInterface
      * @param string $name = Name of the commentor
      * @param int $parent_id = to identify if this comment is a parent comment or under(reply) a parent comment(its a child comment)
      * @param int $body = content of the comment
+     * 
+     * @return int id of the the inserted comment
      */
     public function store(string $name, int $parent_id, $body): int
     {
@@ -31,6 +33,8 @@ class CommentRepository implements CommentRepositoryInterface
 
     /** Pull comment by parent_id
      * @param int $parent_id = parent_id of the comment to be pulled
+     * 
+     * @return int collection of comments
      */
     public function findByParentId(int $parent_id): collection
     {
